@@ -1,19 +1,646 @@
-<!doctype html>
-<html>
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-		<title>My static Space</title>
-		<link rel="stylesheet" href="style.css" />
-	</head>
-	<body>
-		<div class="card">
-			<h1>Welcome to your static Space!</h1>
-			<p>You can modify this app directly by editing <i>index.html</i> in the Files and versions tab.</p>
-			<p>
-				Also don't forget to check the
-				<a href="https://huggingface.co/docs/hub/spaces" target="_blank">Spaces documentation</a>.
-			</p>
-		</div>
-	</body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberSec Agent Suite</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+        }
+        .agent-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .typing {
+            border-right: 2px solid;
+            animation: typing 1s steps(40, end), blink-caret .75s step-end infinite;
+        }
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #3b82f6; }
+        }
+        .hacker-terminal {
+            background-color: #0a0a0a;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            border-radius: 0.5rem;
+            padding: 1rem;
+        }
+        .scan-animation {
+            animation: scan 2s linear infinite;
+        }
+        @keyframes scan {
+            0% { background-position: 0 -100%; }
+            100% { background-position: 0 100%; }
+        }
+        .pulse-red {
+            animation: pulse-red 2s infinite;
+        }
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 min-h-screen text-gray-100">
+    <!-- Header -->
+    <header class="gradient-bg text-white shadow-lg border-b border-blue-400">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-shield-halved text-3xl"></i>
+                    <h1 class="text-2xl font-bold">CyberSec Agent Suite</h1>
+                    <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">v1.0-redteam</span>
+                </div>
+                <div class="flex space-x-4">
+                    <button class="bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg flex items-center space-x-2 transition border border-blue-400/30">
+                        <i class="fas fa-user-secret"></i>
+                        <span>Red Team</span>
+                    </button>
+                    <button class="bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg flex items-center space-x-2 transition border border-blue-400/30">
+                        <i class="fas fa-lock"></i>
+                        <span>Blue Team</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left Sidebar - Agent Selection -->
+            <div class="lg:col-span-1 space-y-6">
+                <div class="bg-gray-800 rounded-xl shadow-md p-6 border border-gray-700">
+                    <h2 class="text-xl font-semibold mb-4 text-blue-300">CyberSec Agents</h2>
+                    <div class="space-y-4">
+                        <!-- Recon Agent -->
+                        <div class="agent-card bg-gray-800 border border-gray-700 rounded-lg p-4 transition cursor-pointer hover:border-blue-400">
+                            <div class="flex items-center space-x-3">
+                                <div class="bg-blue-900/50 p-2 rounded-full border border-blue-400">
+                                    <i class="fas fa-binoculars text-blue-400"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium">Recon Agent</h3>
+                                    <p class="text-sm text-gray-400">Performs OSINT and target reconnaissance</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Vulnerability Scanner -->
+                        <div class="agent-card bg-gray-800 border border-gray-700 rounded-lg p-4 transition cursor-pointer hover:border-blue-400">
+                            <div class="flex items-center space-x-3">
+                                <div class="bg-green-900/50 p-2 rounded-full border border-green-400">
+                                    <i class="fas fa-search-plus text-green-400"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium">Vulnerability Scanner</h3>
+                                    <p class="text-sm text-gray-400">Identifies security weaknesses in systems</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Exploit Agent -->
+                        <div class="agent-card bg-gray-800 border border-gray-700 rounded-lg p-4 transition cursor-pointer hover:border-blue-400">
+                            <div class="flex items-center space-x-3">
+                                <div class="bg-red-900/50 p-2 rounded-full border border-red-400">
+                                    <i class="fas fa-bug text-red-400"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium">Exploit Agent</h3>
+                                    <p class="text-sm text-gray-400">Develops and executes exploit payloads</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Post-Exploitation -->
+                        <div class="agent-card bg-gray-800 border border-gray-700 rounded-lg p-4 transition cursor-pointer hover:border-blue-400">
+                            <div class="flex items-center space-x-3">
+                                <div class="bg-purple-900/50 p-2 rounded-full border border-purple-400">
+                                    <i class="fas fa-arrow-right-to-bracket text-purple-400"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium">Post-Exploitation</h3>
+                                    <p class="text-sm text-gray-400">Maintains access and lateral movement</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Report Generator -->
+                        <div class="agent-card bg-gray-800 border border-gray-700 rounded-lg p-4 transition cursor-pointer hover:border-blue-400">
+                            <div class="flex items-center space-x-3">
+                                <div class="bg-yellow-900/50 p-2 rounded-full border border-yellow-400">
+                                    <i class="fas fa-file-alt text-yellow-400"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium">Report Generator</h3>
+                                    <p class="text-sm text-gray-400">Creates detailed penetration test reports</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Password Cracker -->
+                        <div class="agent-card bg-gray-800 border border-gray-700 rounded-lg p-4 transition cursor-pointer hover:border-blue-400">
+                            <div class="flex items-center space-x-3">
+                                <div class="bg-pink-900/50 p-2 rounded-full border border-pink-400">
+                                    <i class="fas fa-key text-pink-400"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium">Password Cracker</h3>
+                                    <p class="text-sm text-gray-400">Performs brute force and dictionary attacks</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Social Engineer -->
+                        <div class="agent-card bg-gray-800 border border-gray-700 rounded-lg p-4 transition cursor-pointer hover:border-blue-400">
+                            <div class="flex items-center space-x-3">
+                                <div class="bg-indigo-900/50 p-2 rounded-full border border-indigo-400">
+                                    <i class="fas fa-user-ninja text-indigo-400"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium">Social Engineer</h3>
+                                    <p class="text-sm text-gray-400">Creates phishing campaigns and pretexts</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-800 rounded-xl shadow-md p-6 border border-gray-700">
+                    <h2 class="text-xl font-semibold mb-4 text-blue-300">Quick Actions</h2>
+                    <div class="grid grid-cols-2 gap-3">
+                        <button class="bg-blue-900/50 hover:bg-blue-900/70 text-blue-300 py-2 px-3 rounded-lg text-sm font-medium transition flex items-center space-x-2 border border-blue-400/30">
+                            <i class="fas fa-globe"></i>
+                            <span>Scan Website</span>
+                        </button>
+                        <button class="bg-red-900/50 hover:bg-red-900/70 text-red-300 py-2 px-3 rounded-lg text-sm font-medium transition flex items-center space-x-2 border border-red-400/30">
+                            <i class="fas fa-network-wired"></i>
+                            <span>Network Audit</span>
+                        </button>
+                        <button class="bg-green-900/50 hover:bg-green-900/70 text-green-300 py-2 px-3 rounded-lg text-sm font-medium transition flex items-center space-x-2 border border-green-400/30">
+                            <i class="fas fa-envelope"></i>
+                            <span>Phishing Test</span>
+                        </button>
+                        <button class="bg-purple-900/50 hover:bg-purple-900/70 text-purple-300 py-2 px-3 rounded-lg text-sm font-medium transition flex items-center space-x-2 border border-purple-400/30">
+                            <i class="fas fa-file-contract"></i>
+                            <span>Generate Report</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 rounded-xl shadow-md p-6 border border-gray-700">
+                    <h2 class="text-xl font-semibold mb-4 text-blue-300">Active Scans</h2>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center space-x-3">
+                                <div class="relative">
+                                    <div class="h-2 w-2 bg-green-400 rounded-full animate-pulse"></div>
+                                </div>
+                                <span class="text-sm">192.168.1.0/24</span>
+                            </div>
+                            <span class="text-xs text-gray-400">65% complete</span>
+                        </div>
+                        <div class="w-full bg-gray-700 rounded-full h-1">
+                            <div class="bg-blue-400 h-1 rounded-full" style="width: 65%"></div>
+                        </div>
+
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center space-x-3">
+                                <div class="relative">
+                                    <div class="h-2 w-2 bg-yellow-400 rounded-full animate-pulse"></div>
+                                </div>
+                                <span class="text-sm">example.com</span>
+                            </div>
+                            <span class="text-xs text-gray-400">32% complete</span>
+                        </div>
+                        <div class="w-full bg-gray-700 rounded-full h-1">
+                            <div class="bg-yellow-400 h-1 rounded-full" style="width: 32%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Chat Area -->
+            <div class="lg:col-span-2 space-y-6">
+                <div class="bg-gray-800 rounded-xl shadow-md overflow-hidden border border-gray-700">
+                    <div class="border-b border-gray-700 px-6 py-4 bg-gray-900/50">
+                        <div class="flex justify-between items-center">
+                            <h2 class="text-xl font-semibold text-blue-300">PenTest Console</h2>
+                            <div class="flex space-x-2">
+                                <span class="bg-red-900/50 text-red-300 text-xs font-medium px-2.5 py-0.5 rounded-full flex items-center space-x-1">
+                                    <i class="fas fa-skull text-xs"></i>
+                                    <span>RED TEAM MODE</span>
+                                </span>
+                                <span class="bg-green-900/50 text-green-300 text-xs font-medium px-2.5 py-0.5 rounded-full">v1.0</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Chat Messages -->
+                    <div class="h-96 overflow-y-auto p-6 space-y-4" id="chat-messages">
+                        <div class="flex items-start space-x-3">
+                            <div class="bg-blue-900/50 p-2 rounded-full border border-blue-400">
+                                <i class="fas fa-shield-halved text-blue-400"></i>
+                            </div>
+                            <div class="hacker-terminal rounded-lg p-3 max-w-3xl">
+                                <p class="text-green-400">root@cybersec-agent:~# Initializing CyberSec Agent Suite...</p>
+                                <p class="text-green-400">root@cybersec-agent:~# Loading red team modules...</p>
+                                <p class="text-green-400">root@cybersec-agent:~# Ready for penetration testing tasks</p>
+                                <p class="text-gray-400 text-xs mt-1">// Type your pentest command or request</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-3">
+                            <div class="bg-gray-700 p-2 rounded-full border border-gray-500">
+                                <i class="fas fa-user text-gray-300"></i>
+                            </div>
+                            <div class="bg-blue-900/20 rounded-lg p-3 max-w-3xl border border-blue-400/30">
+                                <p class="text-gray-100">Scan example.com for vulnerabilities and attempt SQL injection on the login form</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-3">
+                            <div class="bg-blue-900/50 p-2 rounded-full border border-blue-400">
+                                <i class="fas fa-shield-halved text-blue-400"></i>
+                            </div>
+                            <div class="hacker-terminal rounded-lg p-3 max-w-3xl">
+                                <p class="text-blue-400">[ReconAgent] Starting scan on example.com...</p>
+                                <p class="text-blue-400">[VulnScanner] Running Nikto and OWASP ZAP...</p>
+                                <div class="mt-2 p-2 bg-black/50 rounded border border-red-500/50">
+                                    <p class="text-red-400 font-mono text-sm">[!] SQL Injection vulnerability found at /login.php</p>
+                                    <p class="text-red-400 font-mono text-sm">[!] XSS vulnerability detected in search parameter</p>
+                                </div>
+                                <p class="text-yellow-400 mt-2">[ExploitAgent] Crafting SQLi payload for login form...</p>
+                                <div class="mt-3 bg-green-900/20 border border-green-400/50 rounded-lg p-3">
+                                    <p class="text-green-400 font-medium">root@cybersec-agent:~# Penetration successful!</p>
+                                    <div class="mt-2 text-sm text-gray-300">
+                                        <p>• Extracted database: users (342 records)</p>
+                                        <p>• Admin credentials obtained: admin:7a8b9c0d</p>
+                                        <p>• Web shell uploaded to /images/tmp.php</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Input Area -->
+                    <div class="border-t border-gray-700 p-4 bg-gray-900/50">
+                        <div class="flex space-x-3">
+                            <div class="flex-grow relative">
+                                <textarea id="user-input" class="w-full bg-gray-800 border border-gray-700 rounded-lg pl-4 pr-12 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-200 placeholder-gray-500" rows="2" placeholder="Enter pentest command..."></textarea>
+                                <div class="absolute right-3 bottom-3 flex space-x-2">
+                                    <button class="text-gray-400 hover:text-blue-400">
+                                        <i class="fas fa-terminal"></i>
+                                    </button>
+                                    <button class="text-gray-400 hover:text-blue-400">
+                                        <i class="fas fa-upload"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <button id="send-button" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-lg transition flex items-center justify-center">
+                                <i class="fas fa-paper-plane"></i>
+                                <span class="ml-2 hidden md:inline">Execute</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Agent Status -->
+                <div class="bg-gray-800 rounded-xl shadow-md p-6 border border-gray-700">
+                    <h2 class="text-xl font-semibold mb-4 text-blue-300">Agent Status</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-gray-900/50 rounded-lg p-4 border border-gray-700">
+                            <div class="flex items-center justify-between mb-2">
+                                <h3 class="font-medium text-blue-300">System Health</h3>
+                                <span class="bg-green-900/50 text-green-300 text-xs font-medium px-2.5 py-0.5 rounded-full">Operational</span>
+                            </div>
+                            <div class="space-y-3">
+                                <div>
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span class="text-gray-400">TOR Routing</span>
+                                        <span class="font-medium text-green-400">Active</span>
+                                    </div>
+                                    <div class="w-full bg-gray-700 rounded-full h-1.5">
+                                        <div class="bg-green-500 h-1.5 rounded-full" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span class="text-gray-400">VPN Connection</span>
+                                        <span class="font-medium text-green-400">Switzerland</span>
+                                    </div>
+                                    <div class="w-full bg-gray-700 rounded-full h-1.5">
+                                        <div class="bg-blue-500 h-1.5 rounded-full" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span class="text-gray-400">Payload Storage</span>
+                                        <span class="font-medium">1.8GB/5GB</span>
+                                    </div>
+                                    <div class="w-full bg-gray-700 rounded-full h-1.5">
+                                        <div class="bg-purple-500 h-1.5 rounded-full" style="width: 36%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-900/50 rounded-lg p-4 border border-gray-700">
+                            <div class="flex items-center justify-between mb-2">
+                                <h3 class="font-medium text-blue-300">Recent Findings</h3>
+                                <span class="bg-blue-900/50 text-blue-300 text-xs font-medium px-2.5 py-0.5 rounded-full">3 critical</span>
+                            </div>
+                            <div class="space-y-3">
+                                <div class="flex items-center space-x-3">
+                                    <div class="bg-red-900/50 p-1 rounded-full border border-red-400">
+                                        <i class="fas fa-skull text-red-400 text-sm"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium">SQLi on login.php</p>
+                                        <p class="text-xs text-gray-400">example.com - 2 minutes ago</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <div class="bg-red-900/50 p-1 rounded-full border border-red-400">
+                                        <i class="fas fa-skull text-red-400 text-sm"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium">XSS in search param</p>
+                                        <p class="text-xs text-gray-400">example.com - 5 minutes ago</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <div class="bg-yellow-900/50 p-1 rounded-full border border-yellow-400">
+                                        <i class="fas fa-exclamation-triangle text-yellow-400 text-sm"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium">Outdated jQuery (1.11.0)</p>
+                                        <p class="text-xs text-gray-400">example.com - 8 minutes ago</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 border-t border-gray-800 py-6 mt-12">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center space-x-2 mb-4 md:mb-0">
+                    <i class="fas fa-shield-halved text-blue-400"></i>
+                    <span class="font-medium">CyberSec Agent Suite</span>
+                    <span class="text-xs text-gray-500">v1.0-redteam</span>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-blue-400 transition">Legal</a>
+                    <a href="#" class="text-gray-400 hover:text-blue-400 transition">Ethics</a>
+                    <a href="#" class="text-gray-400 hover:text-blue-400 transition">Docs</a>
+                    <a href="#" class="text-gray-400 hover:text-blue-400 transition">Contact</a>
+                </div>
+            </div>
+            <div class="mt-4 text-center md:text-left text-xs text-gray-500">
+                <p>© 2023 CyberSec Agent Suite. Authorized penetration testing only. Unauthorized use prohibited.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sendButton = document.getElementById('send-button');
+            const userInput = document.getElementById('user-input');
+            const chatMessages = document.getElementById('chat-messages');
+            
+            // Example pentest commands for demo purposes
+            const exampleCommands = [
+                "Scan example.com for vulnerabilities and attempt SQL injection on the login form",
+                "Perform network scan on 192.168.1.0/24 and identify open ports",
+                "Create phishing email template targeting company employees",
+                "Run password cracker on the obtained hashes using rockyou.txt",
+                "Generate penetration test report with critical findings"
+            ];
+            
+            // Add typing indicator
+            function showTypingIndicator() {
+                const typingDiv = document.createElement('div');
+                typingDiv.className = 'flex items-start space-x-3';
+                typingDiv.innerHTML = `
+                    <div class="bg-blue-900/50 p-2 rounded-full border border-blue-400">
+                        <i class="fas fa-shield-halved text-blue-400"></i>
+                    </div>
+                    <div class="hacker-terminal rounded-lg p-3 max-w-3xl">
+                        <div class="typing w-8 h-4"></div>
+                    </div>
+                `;
+                chatMessages.appendChild(typingDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                return typingDiv;
+            }
+            
+            // Remove typing indicator
+            function removeTypingIndicator(typingDiv) {
+                if (typingDiv && typingDiv.parentNode) {
+                    typingDiv.parentNode.removeChild(typingDiv);
+                }
+            }
+            
+            // Add user message to chat
+            function addUserMessage(message) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'flex items-start space-x-3 fade-in';
+                messageDiv.innerHTML = `
+                    <div class="bg-gray-700 p-2 rounded-full border border-gray-500">
+                        <i class="fas fa-user text-gray-300"></i>
+                    </div>
+                    <div class="bg-blue-900/20 rounded-lg p-3 max-w-3xl border border-blue-400/30">
+                        <p class="text-gray-100">${message}</p>
+                    </div>
+                `;
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            // Add agent response to chat
+            function addAgentResponse(response) {
+                const responseDiv = document.createElement('div');
+                responseDiv.className = 'flex items-start space-x-3 fade-in';
+                responseDiv.innerHTML = `
+                    <div class="bg-blue-900/50 p-2 rounded-full border border-blue-400">
+                        <i class="fas fa-shield-halved text-blue-400"></i>
+                    </div>
+                    <div class="hacker-terminal rounded-lg p-3 max-w-3xl">
+                        ${response}
+                    </div>
+                `;
+                chatMessages.appendChild(responseDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            // Generate a pentest response (for demo)
+            function generatePentestResponse(userMessage) {
+                if (userMessage.toLowerCase().includes('scan') && userMessage.toLowerCase().includes('example.com')) {
+                    return `
+                        <p class="text-blue-400">[ReconAgent] Starting scan on example.com...</p>
+                        <p class="text-blue-400">[VulnScanner] Running Nikto and OWASP ZAP...</p>
+                        <div class="mt-2 p-2 bg-black/50 rounded border border-red-500/50">
+                            <p class="text-red-400 font-mono text-sm">[!] SQL Injection vulnerability found at /login.php</p>
+                            <p class="text-red-400 font-mono text-sm">[!] XSS vulnerability detected in search parameter</p>
+                            <p class="text-yellow-400 font-mono text-sm">[!] Outdated jQuery version (1.11.0)</p>
+                        </div>
+                        <p class="text-yellow-400 mt-2">[ExploitAgent] Crafting SQLi payload for login form...</p>
+                        <div class="mt-3 bg-green-900/20 border border-green-400/50 rounded-lg p-3">
+                            <p class="text-green-400 font-medium">root@cybersec-agent:~# Penetration successful!</p>
+                            <div class="mt-2 text-sm text-gray-300">
+                                <p>• Extracted database: users (342 records)</p>
+                                <p>• Admin credentials obtained: admin:7a8b9c0d</p>
+                                <p>• Web shell uploaded to /images/tmp.php</p>
+                            </div>
+                        </div>
+                    `;
+                } else if (userMessage.toLowerCase().includes('network scan') || userMessage.toLowerCase().includes('192.168')) {
+                    return `
+                        <p class="text-blue-400">[ReconAgent] Starting network scan on 192.168.1.0/24...</p>
+                        <div class="mt-2 p-2 bg-black/50 rounded border border-blue-500/50">
+                            <p class="text-blue-400 font-mono text-sm">[+] 192.168.1.1 - Router (OpenWRT)</p>
+                            <p class="text-blue-400 font-mono text-sm">[+] 192.168.1.15 - Windows 10 (SMB open)</p>
+                            <p class="text-blue-400 font-mono text-sm">[+] 192.168.1.23 - Ubuntu Server (SSH open)</p>
+                            <p class="text-red-400 font-mono text-sm">[!] 192.168.1.15 - SMB vulnerable to EternalBlue</p>
+                        </div>
+                        <p class="text-yellow-400 mt-2">[ExploitAgent] Preparing MS17-010 exploit...</p>
+                        <div class="mt-3 bg-green-900/20 border border-green-400/50 rounded-lg p-3">
+                            <p class="text-green-400 font-medium">root@cybersec-agent:~# Exploit successful!</p>
+                            <div class="mt-2 text-sm text-gray-300">
+                                <p>• Gained SYSTEM access on 192.168.1.15</p>
+                                <p>• Dumped SAM database with credentials</p>
+                                <p>• Established persistent backdoor</p>
+                            </div>
+                        </div>
+                    `;
+                } else if (userMessage.toLowerCase().includes('phishing') || userMessage.toLowerCase().includes('email')) {
+                    return `
+                        <p class="text-blue-400">[SocialEngineer] Creating phishing email template...</p>
+                        <div class="mt-2 p-2 bg-black/50 rounded border border-purple-500/50">
+                            <p class="text-purple-400 font-mono text-sm">Subject: Urgent: Your Password Expires Today</p>
+                            <p class="text-purple-400 font-mono text-sm">From: IT Support &lt;support@company.com&gt;</p>
+                            <p class="text-gray-300 font-mono text-sm">Body: Click here to reset your password immediately...</p>
+                        </div>
+                        <p class="text-yellow-400 mt-2">[ReconAgent] Gathering employee emails from LinkedIn...</p>
+                        <div class="mt-3 bg-green-900/20 border border-green-400/50 rounded-lg p-3">
+                            <p class="text-green-400 font-medium">root@cybersec-agent:~# Phishing campaign ready!</p>
+                            <div class="mt-2 text-sm text-gray-300">
+                                <p>• Template created with 0/65 AV detection</p>
+                                <p>• 127 employee emails collected</p>
+                                <p>• Credential harvesting page hosted</p>
+                            </div>
+                        </div>
+                    `;
+                } else if (userMessage.toLowerCase().includes('password') || userMessage.toLowerCase().includes('crack')) {
+                    return `
+                        <p class="text-blue-400">[PasswordCracker] Loading hash file...</p>
+                        <div class="mt-2 p-2 bg-black/50 rounded border border-yellow-500/50">
+                            <p class="text-yellow-400 font-mono text-sm">[+] Hash type: MD5</p>
+                            <p class="text-yellow-400 font-mono text-sm">[+] 342 hashes loaded</p>
+                            <p class="text-yellow-400 font-mono text-sm">[+] Using rockyou.txt wordlist</p>
+                        </div>
+                        <p class="text-yellow-400 mt-2">[PasswordCracker] Running on 8 GPUs (estimated time: 12min)...</p>
+                        <div class="mt-3 bg-green-900/20 border border-green-400/50 rounded-lg p-3">
+                            <p class="text-green-400 font-medium">root@cybersec-agent:~# Cracking complete!</p>
+                            <div class="mt-2 text-sm text-gray-300">
+                                <p>• 87 passwords recovered (25% success rate)</p>
+                                <p>• Top passwords: Company2023, Welcome1, Password123</p>
+                                <p>• Admin password: Winter2023! (hash: a5b4c3d2e1f0)</p>
+                            </div>
+                        </div>
+                    `;
+                } else if (userMessage.toLowerCase().includes('report') || userMessage.toLowerCase().includes('findings')) {
+                    return `
+                        <p class="text-blue-400">[ReportGenerator] Compiling findings...</p>
+                        <div class="mt-2 p-2 bg-black/50 rounded border border-green-500/50">
+                            <p class="text-green-400 font-mono text-sm">[+] 3 Critical vulnerabilities</p>
+                            <p class="text-green-400 font-mono text-sm">[+] 8 High severity issues</p>
+                            <p class="text-green-400 font-mono text-sm">[+] 12 Medium risk findings</p>
+                        </div>
+                        <p class="text-yellow-400 mt-2">[ReportGenerator] Generating executive summary...</p>
+                        <div class="mt-3 bg-green-900/20 border border-green-400/50 rounded-lg p-3">
+                            <p class="text-green-400 font-medium">root@cybersec-agent:~# Report generated!</p>
+                            <div class="mt-2 text-sm text-gray-300">
+                                <p>• PDF report created with remediation steps</p>
+                                <p>• Risk score: 8.7/10 (Critical)</p>
+                                <p>• Evidence screenshots included</p>
+                            </div>
+                            <button class="mt-3 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm transition">
+                                <i class="fas fa-download mr-1"></i> Download Report
+                            </button>
+                        </div>
+                    `;
+                } else {
+                    return `
+                        <p class="text-blue-400">root@cybersec-agent:~# Analyzing command...</p>
+                        <p class="text-blue-400">[ReconAgent] Initializing appropriate modules...</p>
+                        <div class="mt-3 bg-blue-900/20 border border-blue-400/50 rounded-lg p-3">
+                            <p class="text-blue-400 font-medium">Command received</p>
+                            <p class="mt-1 text-sm text-gray-300">The CyberSec Agent Suite is processing your request. Appropriate modules are being activated.</p>
+                        </div>
+                    `;
+                }
+            }
+            
+            // Handle send button click
+            sendButton.addEventListener('click', function() {
+                const message = userInput.value.trim();
+                if (message) {
+                    addUserMessage(message);
+                    userInput.value = '';
+                    
+                    // Show typing indicator
+                    const typingDiv = showTypingIndicator();
+                    
+                    // Simulate processing delay
+                    setTimeout(() => {
+                        removeTypingIndicator(typingDiv);
+                        const response = generatePentestResponse(message);
+                        addAgentResponse(response);
+                    }, 1500 + Math.random() * 2000);
+                }
+            });
+            
+            // Handle Enter key press
+            userInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendButton.click();
+                }
+            });
+            
+            // Add example commands to input placeholder
+            let currentExample = 0;
+            function rotateExample() {
+                userInput.placeholder = `Try: ${exampleCommands[currentExample]}`;
+                currentExample = (currentExample + 1) % exampleCommands.length;
+            }
+            
+            rotateExample();
+            setInterval(rotateExample, 3000);
+        });
+    </script>
+<p style="border-radius: 8px; text-align: center; font-size: 12px; color: #fff; margin-top: 16px;position: fixed; left: 8px; bottom: 8px; z-index: 10; background: rgba(0, 0, 0, 0.8); padding: 4px 8px;">Made with <img src="https://enzostvs-deepsite.hf.space/logo.svg" alt="DeepSite Logo" style="width: 16px; height: 16px; vertical-align: middle;display:inline-block;margin-right:3px;filter:brightness(0) invert(1);"><a href="https://enzostvs-deepsite.hf.space" style="color: #fff;text-decoration: underline;" target="_blank" >DeepSite</a> - 🧬 <a href="https://enzostvs-deepsite.hf.space?remix=S-Dreamer/cybersecagentsuite" style="color: #fff;text-decoration: underline;" target="_blank" >Remix</a></p></body>
 </html>
